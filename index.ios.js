@@ -12,7 +12,8 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import OAuthSimple from 'oauthsimple'
+
+import YelpApi from 'v3-yelp-api'
 import config from './config.js'
 
 export default class CoffeeFixer extends Component {
@@ -32,37 +33,27 @@ export default class CoffeeFixer extends Component {
   }
 
   fetchData() {
-    
+    const credentials = {
+      appId: config.consumer_key,
+      appSecret: config.consumer_secret
+    }
+
+    // console logging the actual object YelpApi led to the solve
+    const yelp = new YelpApi(credentials)
+
     let lat = this.state.position.coords.latitude
     let lng = this.state.position.coords.longitude
 
-    let latlng = "ll=" + String(lat) + "," + String(lng)
+    let latlng = String(lat) + "," + String(lng)
+    let params = {
+      query: 'coffee',
+      location: latlng,
+      limit: '30',
+    }
 
-    let consumerKey = config.consumer_key
-    let consumerSecret = config.consumer_secret
-    let token = config.token
-    let tokenSecret = config.token_secret
-
-    let oauth = new OAuthSimple(consumerKey, tokenSecret)
-
-    var request = oauth.sign({
-      action: 'GET',
-      path: 'https://api.yelp.com/v3/businesses/search',
-      parameters: "term=coffee&" + latlng + 'limit=30',
-      signatures: {
-        api_key: consumerKey,
-        shared_secret: consumerSecret,
-        access_token: token,
-        access_secret: tokenSecret
-      },
-    })
-
-    fetch(request.signed_url, {method: 'GET'}).then(function(response) {
-      return response.json()
-    }).then(function(data) {
-    }).catch(function(error) {
-      console.log("error:", error)
-    })
+    return yelp.search(params)
+    .then(data => console.log(data))
+    .catch(err => err)
   }
 
   render() {
@@ -77,9 +68,10 @@ export default class CoffeeFixer extends Component {
             <Text style={{fontSize: 15}}>Find the Fix!</Text>
           </TouchableOpacity>
       </View>
-    );
+    )
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -99,5 +91,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+
 
 AppRegistry.registerComponent('CoffeeFixer', () => CoffeeFixer);

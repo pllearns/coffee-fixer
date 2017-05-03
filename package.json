@@ -7,13 +7,18 @@
 		"test": "jest"
 	},
 	"dependencies": {
+		"axios": "^0.16.1",
 		"oauthsimple": "^0.0.1",
+		"querystring": "^0.2.0",
 		"react": "16.0.0-alpha.6",
 		"react-native": "0.44.0",
-		"react-native-oauth": "^2.1.16"
+		"react-native-oauth": "^2.1.16",
+		"v3-yelp-api": "^1.0.2"
 	},
 	"devDependencies": {
+		"babel-cli": "^6.24.1",
 		"babel-jest": "19.0.0",
+		"babel-preset-flow": "^6.23.0",
 		"babel-preset-react-native": "1.9.1",
 		"jest": "19.0.2",
 		"react-test-renderer": "16.0.0-alpha.6"
