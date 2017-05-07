@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Text } from 'react'
 
 import { Navigator } from 'react-native-deprecated-custom-components'
 
@@ -9,20 +9,24 @@ class AppNavigator extends Component {
 
   renderScene(route, navigator) {
 
+    let globalNavigatorProps = { navigator }
+
     switch(route.ident) {
       case "PrimarySearch":
         return (
-          <PrimarySearch
-            navigator={navigator.props}
-          />
+          <PrimarySearch {...globalNavigatorProps} />
         )
-      break
+
       case "Results":
         return (
           <Results
-            navigator={navigator.props}
+            {...globalNavigatorProps}
             data={route.data}
           />
+        )
+      default:
+        return (
+          <Text> {`What happened? ${route}`}></Text>
         )
     }
   }
@@ -30,9 +34,10 @@ class AppNavigator extends Component {
     return (
       <Navigator
         initialRoute={this.props.initialRoute}
+        ref="appNavigator"
         renderScene={this.renderScene}
-        configureScene={(route) => Navigator.SceneConfigs.FloatFromRight}
-      />
+        configureScene={(route) => ({
+          ...route.sceneConfig || Navigator.SceneConfigs.FloatFromRight })} />
     )
   }
 }

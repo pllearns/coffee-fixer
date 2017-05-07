@@ -46,23 +46,22 @@ export default class PrimarySearch extends Component {
     let nav = this.props.navigator
     let latlng = String(lat) + "," + String(lng)
     let params = {
-      query: 'coffee',
+      term: 'coffee',
       location: latlng,
       limit: '30',
     }
 
     return yelp.search(params)
     .then((searchResults) => {
-      this.setState({searchResults})
+      nav.push({
+        ident: "Results",
+        data: searchResults
+      })
     })
     .catch(err => err)
   }
 
   render() {
-    console.log('this is my state', this.state.searchResults)
-    if (this.state.searchResults) {
-      return <Results results={JSON.stringify(this.state.searchResults.businesses)}/>
-    }
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>

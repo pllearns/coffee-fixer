@@ -16,7 +16,7 @@ class Results extends Component {
     let dataStore = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 != r2 })
 
     this.state = {
-      results: dataStore.cloneWithRows(props.searchResults.businesses)
+      results: dataStore.cloneWithRows(props.data.businesses)
     }
   }
 
@@ -37,10 +37,10 @@ class Results extends Component {
   renderResult(result) {
     return (
       <TouchableOpacity style={styles.resultRow} onPress={() => Linking.openURL(result.url)}>
-        <Image source={{uri: result.image.uri}}
+        <Image source={{uri: result.image_url}}
           style={{width: 80, height: 80, justifyContent: 'flex-start'}} />
         <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-          <Text style={{fontWeight: 'bold'}}>{`{result.name}`}</Text>
+          <Text style={{fontWeight: 'bold'}}>{`${result.name}`}</Text>
           <Text>Rating: {`${result.rating}`}</Text>
           <Text>Phone: {`${result.display_phone}`}</Text>
         </View>
